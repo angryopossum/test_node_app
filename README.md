@@ -1,1 +1,1 @@
-# test_node_app
+# Pens & Pencils shop on Node.js
