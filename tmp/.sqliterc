@@ -1,0 +1,5 @@
+mode            = column
+separator       = "|"
+header          = on
+main prompt     = "sqlite> "
+continue prompt = "   ...> "

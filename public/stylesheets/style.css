@@ -6,3 +6,26 @@ body {
 a {
   color: #00B7FF;
 }
+
+ul.header {
+    margin: 0;
+    padding: 4px; 
+   }
+   
+ul.header li {
+    display: inline;
+    margin-right: 5px; 
+    padding: 3px; 
+   }
+   
+.leftside {
+    float: left; 
+    width: 20%; 
+    background-color: gray;
+}
+
+.main {
+   float: right; 
+   width: 78%; 
+   margin: 5px;
+}

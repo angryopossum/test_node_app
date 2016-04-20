@@ -1,0 +1,57 @@
+extends ../layout
+
+block content
+  h1= title 
+  p Welcome to #{title}
+  
+  div
+   form(action='/admin/product/#{product[0].code}', method="post")
+      fieldset 
+        legend Update
+        table
+          tr
+            td Description:
+            td 
+              textarea(name='description', cols='100', rows='10') #{product[0].description}'
+          tr
+            td Price:
+            td
+              input(type='text', name='price', value='#{product[0].price}', pattern='[0-9.]+', title='Example: 1234', placeholder='#{product[0].price}')
+          tr
+            td Code:
+            td
+              input(type='text', name='code', value='#{product[0].code}', pattern='^[A-Z]{2}[0-9]{5}', title='Example: 1234', placeholder='#{product[0].code}')
+          tr
+            td Title:
+            td
+              input(type='text', name='title', value='#{product[0].title}' placeholder='#{product[0].title}')
+          tr
+            td  Brand:
+            td
+              select(name='brand', id='')
+                - for (var i =0; i < Object.keys(brands).length; i++) {
+                  - if (product[0].brand == brands[i]._id ){
+                  option(value='#{brands[i]._id}' selected) #{brands[i]._id} 
+                  -} else {
+                  option(value='#{brands[i]._id}') #{brands[i]._id} 
+                  -}
+                - }
+                
+            tr
+            td  Category:
+            td
+              select(name='category', id='')
+                - for (var i =0; i < Object.keys(categories).length; i++) {
+                  - if (product[0].category == categories[i]._id ){
+                  option(value='#{categories[i]._id}' selected) #{categories[i]._id} 
+                  -} else {
+                  option(value='#{categories[i]._id}') #{categories[i]._id} 
+                  -}
+                - }
+                tr
+                
+            td 
+            td
+               button(type='submit') Update
+              
+  a(href="/admin/products") <- Back 

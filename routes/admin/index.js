@@ -1,6 +1,6 @@
-var query = require("../lib/queries");
-var pagination = require("../lib/pagination");
-var Pen = require('../models/pens');
+var query = require("../../lib/queries");
+var pagination = require("../../lib/pagination");
+var Pen = require('../../models/pens');
 var async = require("async");
 var winston = require("winston");
 /*
@@ -41,7 +41,7 @@ exports.index = function(req, res){
         var total = result[2];
         var paginator = pagination.pagination (total, numberPerPage, currentPage, paginatorNumber, link, symbol);
         
-        res.render('index', { 
+        res.render('admin', { 
             title: 'Express', 
             brands: result[0], 
             products: result[1],

@@ -1,6 +1,6 @@
-var query = require("../lib/queries");
-var pagination = require("../lib/pagination");
-var Pen = require('../models/pens');
+var query = require("../../../lib/queries");
+var pagination = require("../../../lib/pagination");
+var Pen = require('../../../models/pens');
 var async = require("async");
 var winston = require("winston");
 /*
@@ -26,9 +26,6 @@ exports.index = function(req, res){
     var numberPerPage = 20;
     var skipCounter = (currentPage-1)*numberPerPage;
     
-    //console.log(queryForPens);
-
-    
     async.series([
      getBrands,
      listProducts,
@@ -41,8 +38,8 @@ exports.index = function(req, res){
         var total = result[2];
         var paginator = pagination.pagination (total, numberPerPage, currentPage, paginatorNumber, link, symbol);
         
-        res.render('index', { 
-            title: 'Express', 
+        res.render('admin/product', { 
+            title: 'Admin page for products', 
             brands: result[0], 
             products: result[1],
             paginator: paginator

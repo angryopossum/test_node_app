@@ -1,20 +1,24 @@
-extends layout
+extends ../layout
 
 block content
   h1= title
-  p Welcome to #{title}
   
   .leftside
-   - for (var i =0; i < Object.keys(brands).length; i++) {
-   | #{brands[i]._id}
-   br
-   - }
+   | this is left side
    
   .main 
-   - for (var i =0; i < Object.keys(products).length; i++) {
-   a(href="product/#{products[i].code}") #{products[i].title} 
+   table
+    - for (var i =0; i < Object.keys(products).length; i++) {
+      tr
+        td  
+          a(href="product/#{products[i].code}") #{products[i].title} 
+        td  
+          a(href="product/#{products[i].code}") Edit
+        td
+          a(href="product/#{products[i].code}/delete", onclick="return confirm('Are you sure?')") Delete 
+    - }
    br
-   - }
+   a(href="products/new") New 
    br
    - if(paginator['prev'][0]=="active"){
       a(href='#{paginator.prev[1]}', aria-label='Previous')

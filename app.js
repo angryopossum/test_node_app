@@ -6,8 +6,16 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
+  , product = require('./routes/product')
+  , admin = require('./routes/admin')
+  , products = require('./routes/admin/product')
+  , product_edit = require('./routes/admin/product/edit')
+  , product_new = require('./routes/admin/product/new')
+  , mongoose = require('./lib/mongoose')
+  , config = require('./config')
   , http = require('http')
   , path = require('path');
+ 
 
 var app = express();
 
@@ -28,7 +36,18 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/product/:product', product.index);
+
+app.get('/admin', admin.index);
+app.get('/admin/products', products.index);
+app.get('/admin/product/:product', product_edit.edit);
+app.post('/admin/product/:product', product_edit.update);
+app.get('/admin/product/:product/delete', product_edit.delete);
+app.get('/admin/products/new', product_new.new);
+app.post('/admin/products/new', product_new.create);
+
 app.get('/users', user.list);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

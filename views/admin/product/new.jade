@@ -1,0 +1,48 @@
+extends ../layout
+
+block content
+  h1= title 
+  
+  div
+   form(action='/admin/products/new', method="post")
+      fieldset 
+        legend Create new product
+        table
+          tr
+            td Description:
+            td 
+              textarea(name='description', cols='100', rows='10')
+          tr
+            td Price:
+            td
+              input(type='text', name='price', pattern='[0-9.]+', title='Example: 1234')
+          tr
+            td Code:
+            td
+              input(type='text', name='code', pattern='^[A-Z]{2}[0-9]{5}', title='Example: 1234')
+          tr
+            td Title:
+            td
+              input(type='text', name='title')
+          tr
+            td  Brand:
+            td
+              select(name='brand', id='')
+                - for (var i =0; i < Object.keys(brands).length; i++) {
+                  option(value='#{brands[i]._id}' ) #{brands[i]._id} 
+                - }
+                
+          tr
+            td  Category:
+            td
+              select(name='category', id='')
+                - for (var i =0; i < Object.keys(categories).length; i++) {
+                  option(value='#{categories[i]._id}') #{categories[i]._id} 
+                - }
+          tr
+                
+            td 
+            td
+               button(type='submit') Create
+              
+  a(href="/admin/products") <- Back 
