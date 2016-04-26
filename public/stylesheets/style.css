@@ -29,3 +29,31 @@ ul.header li {
    width: 78%; 
    margin: 5px;
 }
+
+.downmenu {
+  display: none;
+  width: 250px;
+  background: #ccc;
+  color: red;
+  border-style: solid;
+  border-color: blue;
+  border-width: 2px; 
+}
+
+.downmenu ul {
+   width: 100%;
+   padding-left: 0;
+   margin-top: 0;
+   margin-bottom: 0;
+}
+
+.downmenu li {
+  list-style-type: none;
+  background-color: yellow;
+  padding: 5px 5px 5px 5px;
+}
+
+.downmenu li:hover {
+    background-color: silver;
+}
+

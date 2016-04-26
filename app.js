@@ -6,13 +6,14 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
+  , search = require('./routes/search')
   , product = require('./routes/product')
   , admin = require('./routes/admin')
   , products = require('./routes/admin/product')
   , product_edit = require('./routes/admin/product/edit')
   , product_new = require('./routes/admin/product/new')
   , mongoose = require('./lib/mongoose')
-  , config = require('./config')
+  , config = require('./config') 
   , http = require('http')
   , path = require('path');
  
@@ -46,6 +47,8 @@ app.get('/admin/product/:product/delete', product_edit.delete);
 app.get('/admin/products/new', product_new.new);
 app.post('/admin/products/new', product_new.create);
 
+app.get('/search', search.index);
+app.post('/search', search.livesearch);
 app.get('/users', user.list);
 
 

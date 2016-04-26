@@ -1,0 +1,110 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{result}
+  div(id="myid")
+  
+  form(name='search1', action='/search', autocomplete="off")
+      input(type='text', name='search', onkeyup="showResult(this.value);sendData();", id="s_in")
+      button(type='submit') Search
+
+  div(id="s_res", class="downmenu")
+   ul
+    li(id="ser_1", onClick="getValue(this.innerHTML)")
+    li(id="ser_2", onClick="getValue(this.innerHTML)")
+    li(id="ser_3", onClick="getValue(this.innerHTML)")
+    li(id="ser_4", onClick="getValue(this.innerHTML)")
+    li(id="ser_5", onClick="getValue(this.innerHTML)")
+    
+  div(id="title")
+ 
+  div
+   - for (var i =0; i < Object.keys(product).length; i++) {
+   b
+    | #{i} 
+   | #{product[i].title}
+   br
+   - }
+  
+  script(type='text/javascript').
+   function showResult(str){
+    if (str.length!=0) {
+     document.getElementById("s_res").style.position ="absolute";
+     document.getElementById("s_res").style.display ='block';
+     document.getElementById("s_res").style.zIndex =1;
+     document.getElementById("s_res").style.backgroundColor ="gray";
+     return;
+    } else {
+     document.getElementById("s_res").style.display ='none';
+     console.log("BalBlaBla");
+    }
+    
+   }
+   
+   function getValue (value) {
+      document.getElementById("s_in").value = value;	
+      document.getElementById("s_res").style.display ='none';
+   } 
+  
+  
+  script(type='text/javascript').
+   function sendData(){
+    var formData = new FormData(document.forms.search1);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/search");
+    xhr.send(formData);
+    
+    xhr.onload = function (e) {
+       if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+             console.log(xhr.responseText);
+             var prod = JSON.parse(xhr.responseText);
+             document.getElementById('ser_1').innerHTML = prod[0].title;
+             document.getElementById('ser_2').innerHTML = prod[1].title;
+             document.getElementById('ser_3').innerHTML = prod[2].title;
+             document.getElementById('ser_4').innerHTML = prod[3].title;
+             document.getElementById('ser_5').innerHTML = prod[4].title;
+    
+          } else {
+             console.error(xhr.statusText);
+          }
+       }
+     };
+
+     xhr.onerror = function (e) {
+        console.error(xhr.statusText);
+     };
+     xhr.send(null);
+    
+   }
+  
+  button(onclick='sendData()') Send
+   
+  script(type='text/javascript'). 
+   function getRequest () {
+  
+     var xhr = new XMLHttpRequest();
+     xhr.open("GET", "test.json", true);
+     xhr.onload = function (e) {
+       if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+             console.log(xhr.responseText);
+             document.getElementById('myid').innerHTML = xhr.responseText;
+             var prod = JSON.parse(xhr.responseText);
+             document.getElementById('title').innerHTML = searchResult['title'];
+          } else {
+             console.error(xhr.statusText);
+          }
+       }
+     };
+
+     xhr.onerror = function (e) {
+        console.error(xhr.statusText);
+     };
+     xhr.send(null);
+
+     
+
+    }
+    
