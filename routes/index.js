@@ -9,17 +9,41 @@ var winston = require("winston");
 
 exports.index = function(req, res){
     
-    if(req.query.price){var price = req.query.price } else {var price = [] }
-    if(req.query.brand){var brand_req = req.query.brand } else {var brand_req = [] }
+    var brand_check,
+        category_check,
+        price_check;
+    
+    var prices = [
+        '_2',
+        '2_5',
+        '5_10',
+        '10_50',
+        '50_'
+        ];
+    
+    if(req.param('brand')){ brand_check = req.param('brand')} else {brand_check =[]}
+    if(req.param('category')){category_check = req.param('category')} else {category_check =[]}
+    if(req.param('price')){price_check = req.param('price')} else {price_check =[]}
+    
     if(req.query.page){var currentPage = req.query.page } else {currentPage = 1}
 
-    if(req.query.price || req.query.brand){
-      var queryForPens = query.makeQuery (req.query.brand, req.query.price);
+    if(req.query.price || req.query.brand || req.query.category){
+        var queryForPens = query.makeQuery(req.query.brand, req.query.price, req.query.category);
         var symbol = "&";
     } else {
        queryForPens  = null;
        symbol = "?";
     }
+    
+    if(req.param('search')){
+        
+        var search = req.param('search');
+        var st = new RegExp(search, 'i');
+        var queryForPens = {title: st};
+        symbol = "&";
+    } 
+    
+    
     
     
     var paginatorNumber = 5;
@@ -32,7 +56,8 @@ exports.index = function(req, res){
     async.series([
      getBrands,
      listProducts,
-     listProductsCount
+     listProductsCount,
+     getCategories
     ],
     function(err, result){
         if (err) throw err;
@@ -45,7 +70,12 @@ exports.index = function(req, res){
             title: 'Express', 
             brands: result[0], 
             products: result[1],
-            paginator: paginator
+            categories: result[3],
+            paginator: paginator,
+            brand_check: brand_check,
+            category_check: category_check,
+            price_check: price_check,
+            prices: prices
         });
      
     });
@@ -63,7 +93,7 @@ exports.index = function(req, res){
     }
     
     function listProducts(callback){
-          Pen.find(query).limit(numberPerPage).skip(skipCounter).exec(
+          Pen.find(queryForPens).limit(numberPerPage).skip(skipCounter).sort({"price": -1}).exec(
             function (err, result) {
              if(err) throw err;
              callback(null, result);
@@ -71,11 +101,52 @@ exports.index = function(req, res){
     }
     
     function listProductsCount(callback){
-          Pen.find(query).count().exec(
+          Pen.find(queryForPens).count().exec(
             function (err, result) {
              if(err) throw err;
              callback(null, result);
            });
     }
+    
+    function getCategories(callback){
+        
+     var queryCategories =  [{ $group: {_id: "$category"}}];
+    
+      Pen.aggregate(queryCategories).exec(
+           function (err, result) {
+             if(err) throw err;
+             callback(null, result);
+        });
+    }
+    
+};
+
+
+
+exports.livesearch = function(req, res){
+    
+    var search = req.param('search');
+    var st = new RegExp(search, 'i');
+    var query = {title: st};
+  
+    async.series([
+     searchProduct
+    ],
+    function(err, result){
+        if (err) throw err;
+        
+        res.json(result[0]);
+     
+    });
+
+   function searchProduct (callback) {
+
+     Pen.find(query).limit(5).exec(
+            function (err, result) {
+             if(err) throw err;
+             callback(null, result);
+           });
+    }
+   
     
 };

@@ -1,7 +1,7 @@
 .header
       ul.header
         li
-          a(href='') Home
+          a(href='/') Home
         li
           a(href='/pens') Pens
         li
@@ -10,4 +10,15 @@
           a(href='/papers') Papers
         li
           a(href='/feedback') Feedback
-        
+      
+      form(name='search1', action='/', autocomplete="off")
+        input(type='text', name='search', onkeyup="showResult(this.value);sendData();", id="s_in")
+        button(type='submit') Search
+
+      div(id="s_res", class="downmenu")
+        ul
+          li(id="ser_1", onClick="getValue(this.innerHTML)")
+          li(id="ser_2", onClick="getValue(this.innerHTML)")
+          li(id="ser_3", onClick="getValue(this.innerHTML)")
+          li(id="ser_4", onClick="getValue(this.innerHTML)")
+          li(id="ser_5", onClick="getValue(this.innerHTML)")       

@@ -2,17 +2,54 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #{title} 
+  select(name='sort')
+      option(value='low_to_high') Price: Low to High
+      option(value='high_to_low') Price: High to Low
+
   
   .leftside
-   - for (var i =0; i < Object.keys(brands).length; i++) {
-   | #{brands[i]._id}
-   br
-   - }
+   form(action='')
+    ul
+     - for (var i =0; i < Object.keys(brands).length; i++) {
+     li 
+       - if (brand_check.indexOf(brands[i]._id)==-1) {
+          input(type='checkbox', name="brand", value="#{brands[i]._id}", checked=false ) 
+          | #{brands[i]._id}
+       -} else {
+          input(type='checkbox', name="brand", value="#{brands[i]._id}", checked=true ) 
+          | #{brands[i]._id}   
+       -}
+     - }
+    br
+    ul
+     - for (var i =0; i < Object.keys(prices).length; i++) {
+     li 
+      - if (price_check.indexOf(prices[i])==-1) {
+         input(type='checkbox', name="price", value="#{prices[i]}", checked=false ) 
+         | #{prices[i]}
+      -} else {
+          input(type='checkbox', name="price", value="#{prices[i]}" , checked=true ) 
+         | #{prices[i]}
+      -}
+     - }
+    ul
+     - for (var i =0; i < Object.keys(categories).length; i++) {
+     li 
+      - if (category_check.indexOf(categories[i]._id)==-1) {
+         input(type='checkbox', name="category", value="#{categories[i]._id}", checked=false ) 
+         | #{categories[i]._id}
+      -} else {
+          input(type='checkbox', name="category", value="#{categories[i]._id}", checked=true ) 
+         | #{categories[i]._id}
+      -}
+     - }
+
+    button(type='submit') Submit
    
   .main 
    - for (var i =0; i < Object.keys(products).length; i++) {
-   a(href="product/#{products[i].code}") #{products[i].title} 
+   a(href="product/#{products[i].code}") #{products[i].title} #{products[i].price}
    br
    - }
    br
@@ -42,4 +79,54 @@ block content
     - } else {
       a(href='#{paginator.next[1]}', aria-label='Next')
         span(aria-hidden='true') »
-    - }            
+    - } 
+    
+  script(type='text/javascript').
+   function showResult(str){
+    if (str.length!=0) {
+     document.getElementById("s_res").style.position ="absolute";
+     document.getElementById("s_res").style.display ='block';
+     document.getElementById("s_res").style.zIndex =1;
+     document.getElementById("s_res").style.backgroundColor ="gray";
+     return;
+    } else {
+     document.getElementById("s_res").style.display ='none';
+    }
+    
+   }
+   
+   function sendData(){
+    var formData = new FormData(document.forms.search1);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/");
+    xhr.send(formData);
+    
+    xhr.onload = function (e) {
+       if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+             console.log(xhr.responseText);
+             var prod = JSON.parse(xhr.responseText);
+             document.getElementById('ser_1').innerHTML = prod[0].title;
+             document.getElementById('ser_2').innerHTML = prod[1].title;
+             document.getElementById('ser_3').innerHTML = prod[2].title;
+             document.getElementById('ser_4').innerHTML = prod[3].title;
+             document.getElementById('ser_5').innerHTML = prod[4].title;
+    
+          } else {
+             console.error(xhr.statusText);
+          }
+       }
+     };
+
+     xhr.onerror = function (e) {
+        console.error(xhr.statusText);
+     };
+     xhr.send(null);
+    
+   }
+   
+   function getValue (value) {
+      document.getElementById("s_in").value = value;	
+      document.getElementById("s_res").style.display ='none';
+   } 
+  

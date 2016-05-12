@@ -37,6 +37,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.post('/', routes.livesearch);
 app.get('/product/:product', product.index);
 
 app.get('/admin', admin.index);
