@@ -4,8 +4,8 @@ block content
   h1= title
   p Welcome to #{title} 
   select(name='sort')
-      option(value='low_to_high') Price: Low to High
-      option(value='high_to_low') Price: High to Low
+      option(value='low_to_high', onclick='sortPrice(window.location.search,"low_to_high")') Price: Low to High
+      option(value='high_to_low', onclick='sortPrice(window.location.search,"high_to_low")') Price: High to Low
 
   
   .leftside
@@ -129,4 +129,10 @@ block content
       document.getElementById("s_in").value = value;	
       document.getElementById("s_res").style.display ='none';
    } 
-  
+
+   function sortPrice(url,sort_value){
+      var url2 = url.replace(/&sort=[a-z_]+/,"");
+     window.location.href=url2+"&sort="+sort_value;
+   }
+
+    

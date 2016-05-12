@@ -43,7 +43,7 @@ exports.index = function(req, res){
         symbol = "&";
     } 
     
-    
+    if(req.param('sort')=="high_to_low"){var sort = -1} else {sort = 1}
     
     
     var paginatorNumber = 5;
@@ -93,7 +93,7 @@ exports.index = function(req, res){
     }
     
     function listProducts(callback){
-          Pen.find(queryForPens).limit(numberPerPage).skip(skipCounter).sort({"price": -1}).exec(
+          Pen.find(queryForPens).limit(numberPerPage).skip(skipCounter).sort({"price": sort}).exec(
             function (err, result) {
              if(err) throw err;
              callback(null, result);
