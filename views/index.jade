@@ -132,7 +132,13 @@ block content
 
    function sortPrice(url,sort_value){
       var url2 = url.replace(/&sort=[a-z_]+/,"");
-     window.location.href=url2+"&sort="+sort_value;
+      if (url2==""){
+        window.location.href="?sort="+sort_value;
+      }
+      else
+      {
+        window.location.href=url2+"&sort="+sort_value;   
+      }
    }
 
     
