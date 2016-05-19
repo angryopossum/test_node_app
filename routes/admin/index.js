@@ -3,12 +3,13 @@ var pagination = require("../../lib/pagination");
 var Pen = require('../../models/pens');
 var async = require("async");
 var winston = require("winston");
+
 /*
- * GET home page.
+ * GET admin index page.
  */
 
 exports.index = function(req, res){
-    
+  
     if(req.query.price){var price = req.query.price } else {var price = [] }
     if(req.query.brand){var brand_req = req.query.brand } else {var brand_req = [] }
     if(req.query.page){var currentPage = req.query.page } else {currentPage = 1}

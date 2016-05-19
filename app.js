@@ -48,6 +48,8 @@ app.get('/admin/product/:product/delete', product_edit.delete);
 app.get('/admin/products/new', product_new.new);
 app.post('/admin/products/new', product_new.create);
 
+//app.get('/admin/pages', pages.index);
+
 app.get('/search', search.index);
 app.post('/search', search.livesearch);
 app.get('/users', user.list);

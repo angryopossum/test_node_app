@@ -1,14 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Admin page
   
-  .leftside
-   - for (var i =0; i < Object.keys(brands).length; i++) {
-   | #{brands[i]._id}
-   br
-   - }
-   
   .main 
-  | Products User Category
+  ul
+   li
+    a(href='admin/users') Users
+   li
+    a(href='admin/products') Products
+  
+    
+  
