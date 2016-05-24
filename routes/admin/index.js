@@ -7,6 +7,7 @@ var winston = require("winston");
 /*
  * GET admin index page.
  */
+ 
 
 exports.index = function(req, res){
   
@@ -27,8 +28,8 @@ exports.index = function(req, res){
     var numberPerPage = 20;
     var skipCounter = (currentPage-1)*numberPerPage;
     
-    //console.log(queryForPens);
-
+    console.log(req.isAuthenticated());
+     console.log(req.user.username);
     
     async.series([
      getBrands,
@@ -46,7 +47,8 @@ exports.index = function(req, res){
             title: 'Express', 
             brands: result[0], 
             products: result[1],
-            paginator: paginator
+            paginator: paginator,
+            username: req.user.username
         });
      
     });
