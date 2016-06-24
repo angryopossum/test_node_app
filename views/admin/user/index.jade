@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  .main 
+   table
+    - for (var i =0; i < Object.keys(users).length; i++) {
+      tr
+        td  
+          a(href="user/#{users[i].username}") #{users[i].username} 
+        td  
+          a(href="user/#{users[i].username}") Edit
+        td
+          a(href="user/#{users[i].username}/delete", onclick="return confirm('Are you sure?')") Delete 
+    - }
+   br
+   a(href="users/new") New 
+   

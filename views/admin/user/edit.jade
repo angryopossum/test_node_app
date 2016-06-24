@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  h1= title 
+  p Welcome to #{title}
+  
+  div
+   form(action='/admin/user/#{user[0].username}', method="post")
+      fieldset 
+        legend Update
+        table
+         tr
+            td Username:
+            td #{user[0].username}
+              
+         tr
+            td Password:
+            td
+              input(type='password', name='password')      
+         tr
+            td Email:
+            td
+              input(type='email', name='email', value='#{user[0].email}', title='Example: user@example.com', placeholder='#{user[0].email}')
+         tr
+            td
+               button(type='submit') Update
+              
+  a(href="/admin/users") <- Back 

@@ -28,8 +28,12 @@ exports.index = function(req, res){
     var numberPerPage = 20;
     var skipCounter = (currentPage-1)*numberPerPage;
     
-    console.log(req.isAuthenticated());
-     console.log(req.user.username);
+    
+    console.log(req.user.username);
+   // console.log(req.session);
+    //req.session.view = 200;
+   req.session.view = req.session.view  + 1;
+    console.log(req.session.passport.user);
     
     async.series([
      getBrands,

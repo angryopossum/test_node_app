@@ -4,8 +4,11 @@
  */
 
 var express = require('express')
+  , config =require("./config")
   , routes = require('./routes')
-  , user = require('./routes/user')
+  , user = require('./routes/admin/user')
+  , user_edit = require('./routes/admin/user/edit')
+  , user_new = require('./routes/admin/user/new')
   , search = require('./routes/search')
   , product = require('./routes/product')
   , admin = require('./routes/admin')
@@ -22,6 +25,8 @@ var express = require('express')
   , flash = require('connect-flash')
   , expressSession = require('express-session');
  
+
+const MongoStore = require("connect-mongo")(express);
 
 var app = express();
 
@@ -40,7 +45,13 @@ app.use(flash());
 
 // Cookies & Passport
 app.use(cookieParser());
-app.use(express.session({secret: 'mySecretKey'}));
+app.use(express.session({
+  secret: config.get('session:secret'),
+  key: config.get('session:key'),
+  cookie: config.get('session:cookie'),
+  store: new MongoStore({mongooseConnection: mongoose.connection})
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
@@ -60,7 +71,6 @@ app.all('/admin', login.mustAuthenticated);
 app.all('/admin/*', login.mustAuthenticated);
 
 
-
 app.get('/', routes.index);
 app.post('/', routes.livesearch);
 app.get('/product/:product', product.index);
@@ -73,11 +83,15 @@ app.get('/admin/product/:product/delete', product_edit.delete);
 app.get('/admin/products/new', product_new.new);
 app.post('/admin/products/new', product_new.create);
 
-//app.get('/admin/pages', pages.index);
+app.get('/admin/users', user.index);
+app.get('/admin/user/:username', user_edit.edit);
+app.post('/admin/user/:username', user_edit.update);
+app.get('/admin/user/:username/delete', user_edit.delete);
+app.get('/admin/users/new', user_new.new);
+app.post('/admin/users/new', user_new.create);
 
 app.get('/search', search.index);
 app.post('/search', search.livesearch);
-app.get('/users', user.list);
 
 app.get('/login', login.index);
 app.post('/login', passport.authenticate('login', {
@@ -99,3 +113,5 @@ app.get('/logout', login.logout);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
