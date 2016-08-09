@@ -15,6 +15,7 @@ var express = require('express')
   , products = require('./routes/admin/product')
   , product_edit = require('./routes/admin/product/edit')
   , product_new = require('./routes/admin/product/new')
+  , cart = require('./routes/cart')
   , login = require('./routes/login')
   , mongoose = require('./lib/mongoose')
   , config = require('./config') 
@@ -55,6 +56,7 @@ app.use(express.session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./middleware/loadUser'));
+app.use(require('./middleware/shoppingCart'));
 app.use(app.router);
 
 
@@ -90,6 +92,10 @@ app.post('/admin/user/:username', user_edit.update);
 app.get('/admin/user/:username/delete', user_edit.delete);
 app.get('/admin/users/new', user_new.new);
 app.post('/admin/users/new', user_new.create);
+
+app.get('/cart', cart.index);
+app.post('/cart/add', cart.add);
+app.post('/cart/remove', cart.remove);
 
 app.get('/search', search.index);
 app.post('/search', search.livesearch);

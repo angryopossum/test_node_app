@@ -1,6 +1,16 @@
 extends layout
 
 block content
+  script(type='text/javascript').
+ 
+   function sendData(){
+    var formData = new FormData(document.forms.addtocart);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/cart/add");
+    xhr.send(formData);
+    
+    }
+    
   h1= title 
   p Welcome to #{title}
  
@@ -12,5 +22,30 @@ block content
     br
     br
   
+  form(action='/cart/add' name="addtocart")
+      input(type='hidden', name='title', value='#{product[0].title}')
+      input(type='hidden', name='code', value='#{product[0].code}')
+      input(type='hidden', name='price', value='#{product[0].price}')
+      | 		                #{product[0].title}
+      br
+      | 		                #{product[0].code}
+      br
+      | 		                #{product[0].price}
+      br
+      label(for='') Color
+      select(name='color')
+        option(value='Black') Black
+        option(value='Red') Red
+        option(value='White') White
+      br  
+      label(for='') QTY
+      select(name='qty')
+        option(value='1') 1
+        option(value='2') 2
+        option(value='3') 3
+        option(value='4') 4
+        option(value='5') 5
+      br
+      button(type='button', onclick="sendData()") Add to cart
   
   

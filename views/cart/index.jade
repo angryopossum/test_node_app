@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+
+  script(type='text/javascript').
+ 
+   function sendData(){
+    var formData = new FormData(document.forms.removefromcart);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/cart/remove");
+    xhr.send(formData);
+    
+    }
+  
+   function deleteItem(id){
+    var params = "id="+id;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/cart/remove");
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");   
+    xhr.setRequestHeader("Content-length", params.length);
+    xhr.setRequestHeader("Connection", "close");
+    xhr.onreadystatechange = function() {if(xhr.readyState == 4 && xhr.status == 200) {}}
+    xhr.send(params);
+    document.getElementById(id).parentNode.removeChild(document.getElementById(id))
+    }
+  
+  
+  
+ 
+  h1= title
+  - for (var i = Object.keys(cart).length ; i--; ) {
+    span(id="#{cart[i]._id}")
+     |#{cart[i]._id} #{cart[i].code} #{cart[i].title} #{cart[i].qty} #{cart[i].price} 
+     button(type='button', onclick="deleteItem('#{cart[i]._id}');") delete  
+    br
+  - }
+   
