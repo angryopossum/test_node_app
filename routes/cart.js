@@ -6,12 +6,38 @@ var async = require("async");
 
 exports.index = function(req, res){
   
+  
+    
+  
+  
+  
     function listCart(callback){
-          Shoppingcart.find({userid: req.user._id}).exec(
-            function (err, result) {
-             if(err) throw err;
-             callback(null, result);
-           });
+        
+         if (req.session.auser == "true"){
+             
+             //console.log("IT's true: " + req.session.cart.length);
+             if (typeof(req.session.cart) == "undefined"){
+                 var result = [];
+                  callback(null,  result);
+             } else {
+                 callback(null, req.session.cart); 
+             }
+           
+            
+             
+         } else {
+             console.log("IT's absolutly false");
+             Shoppingcart.find({userid: req.user._id}).exec(
+                function (err, result) {
+                   if(err) throw err;
+                   callback(null, result);
+             });
+     
+         }
+        
+        
+        
+          
     }
     
     
@@ -45,25 +71,77 @@ exports.index = function(req, res){
 
 exports.add = function(req, res){
   
+    console.log(typeof(req.session.passport));
+    console.log(JSON.stringify(req.session));
+  
     
-    var newCart = new Shoppingcart();
+    if (typeof(req.session.passport) != "undefined"){
+     
+     if (req.session.passport.user) {
+       var newCart = new Shoppingcart();
    
-    newCart.qty = req.param('qty');
-    newCart.userid = req.user._id;
-    newCart.code = req.param('code');
-    newCart.title = req.param('title');
-    newCart.price = req.param('price');
-    newCart.save(function (err) {
-        if (err) {
-                  console.log('Error in Saving cart: ' + err);
-                  throw err;
-                 }
-                   console.log('Cart saving succesful');
-                  });
-                        
-
-
-
+       newCart.qty = req.param('qty');
+       newCart.userid = req.user._id;
+       newCart.code = req.param('code');
+       newCart.title = req.param('title');
+       newCart.price = req.param('price');
+       newCart.save(function (err) {
+          if (err) {
+                    console.log('Error in Saving cart: ' + err);
+                    throw err;
+                   }
+                     console.log('Cart saving succesful');
+                    });
+     } else {
+        
+        if ( typeof(req.session.cart) == "undefined") {
+         console.log("Такого нету");
+         req.session.cart = [];
+         req.session.cart[0] = {};
+         req.session.cart[0].qty = req.param('qty');
+         req.session.cart[0].title = req.param('title');
+         req.session.cart[0].code = req.param('code');
+         req.session.cart[0].price = req.param('price');
+     } else {
+         console.log("Такой есть");
+         var counter =  req.session.cart.length;
+         req.session.cart[counter] = {};
+         req.session.cart[counter].qty = req.param('qty');
+         req.session.cart[counter].code = req.param('code');
+         req.session.cart[counter].title = req.param('title');
+         req.session.cart[counter].price = req.param('price');
+     }
+         
+         
+     }
+                   
+                   
+    } else {
+     
+     if ( typeof(req.session.cart) == "undefined") {
+         console.log("Такого нету");
+         req.session.cart = [];
+         req.session.cart[0] = {};
+         req.session.cart[0].qty = req.param('qty');
+         req.session.cart[0].title = req.param('title');
+         req.session.cart[0].code = req.param('code');
+         req.session.cart[0].price = req.param('price');
+     } else {
+         console.log("Такой есть");
+         var counter =  req.session.cart.length;
+         req.session.cart[counter] = {};
+         req.session.cart[counter].qty = req.param('qty');
+         req.session.cart[counter].code = req.param('code');
+         req.session.cart[counter].title = req.param('title');
+         req.session.cart[counter].price = req.param('price');
+     
+     }
+     
+    
+     console.log(JSON.stringify(req.session));
+        
+    }
+    
 
     res.json({user: 'tobi'});
         

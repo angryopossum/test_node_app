@@ -9,8 +9,6 @@ var winston = require("winston");
 
 exports.index = function(req, res){
     
-    console.log("SEssion:" + req.session.view);
-     console.log(req.session);
     
     var brand_check,
         category_check,

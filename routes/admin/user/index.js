@@ -14,7 +14,7 @@ var async = require("async");
 
 exports.index = function(req, res){
     
-    console.log(req.session);
+    //console.log(req.session);
     
     
     async.series([
