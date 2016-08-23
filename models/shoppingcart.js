@@ -6,5 +6,5 @@ module.exports = mongoose.model('Shoppingcart',{
     code: String,
     title: String,
     price: String,
-    qty: String
+    qty: Number
 });

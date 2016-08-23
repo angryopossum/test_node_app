@@ -73,23 +73,40 @@ exports.add = function(req, res){
     console.log(JSON.stringify(req.session));
   
     
+   
+    
     if (typeof(req.session.passport) != "undefined"){
      
      if (req.session.passport.user) {
-       var newCart = new Shoppingcart();
+     
+       Shoppingcart.findOne({code: req.param('code')}).exec(
+          function (err, result) {
+            if(err) throw err;
+            if (result == null){
+             var newCart = new Shoppingcart();
    
-       newCart.qty = req.param('qty');
-       newCart.userid = req.user._id;
-       newCart.code = req.param('code');
-       newCart.title = req.param('title');
-       newCart.price = req.param('price');
-       newCart.save(function (err) {
-          if (err) {
-                    console.log('Error in Saving cart: ' + err);
-                    throw err;
-                   }
-                     console.log('Cart saving succesful');
-                    });
+             newCart.qty = req.param('qty');
+             newCart.userid = req.user._id;
+             newCart.code = req.param('code');
+             newCart.title = req.param('title');
+             newCart.price = req.param('price');
+             newCart.save(function (err) {
+                
+                if (err) {
+                           console.log('Error in Saving cart: ' + err);
+                           throw err;
+                         }
+                console.log('Cart saving succesful');
+                      });
+                    
+                } else {
+                   result.qty = result.qty + parseInt(req.param('qty')); 
+                   result.save();
+                }
+                  
+           });
+    
+     
      } else {
         
         if ( typeof(req.session.cart) == "undefined") {
