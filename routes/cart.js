@@ -107,30 +107,40 @@ exports.add = function(req, res){
            });
     
      
-     } else {
+    } else {
         
         if ( typeof(req.session.cart) == "undefined") {
-         console.log("Такого нету");
-         req.session.cart = [];
-         req.session.cart[0] = {};
-         req.session.cart[0]._id = uniqueid.uniqueid();
-         req.session.cart[0].qty = req.param('qty');
-         req.session.cart[0].title = req.param('title');
-         req.session.cart[0].code = req.param('code');
-         req.session.cart[0].price = req.param('price');
-     } else {
-         console.log("Такой есть");
-         var counter =  req.session.cart.length;
-         req.session.cart[counter] = {};
-         req.session.cart[counter]._id = uniqueid.uniqueid();
-         req.session.cart[counter].qty = req.param('qty');
-         req.session.cart[counter].code = req.param('code');
-         req.session.cart[counter].title = req.param('title');
-         req.session.cart[counter].price = req.param('price');
-     }
+           console.log("Такого нету");
+           req.session.cart = [];
+           req.session.cart[0] = {};
+           req.session.cart[0]._id = uniqueid.uniqueid();
+           req.session.cart[0].qty = parseInt(req.param('qty'));
+           req.session.cart[0].title = req.param('title');
+           req.session.cart[0].code = req.param('code');
+           req.session.cart[0].price = req.param('price');
+        } else {
+           console.log("Такой есть");
+           var counter =  req.session.cart.length;
+          
+           for (var i = 0; i < counter; i++) {
+             if(req.session.cart[i].code == req.param('code')){
+                 req.session.cart[i].qty =  req.session.cart[i].qty + parseInt(req.param('qty'));
+                 var iteminCart = true;
+             } 
+            }
          
+           if (iteminCart != true){
+            req.session.cart[counter] = {};
+            req.session.cart[counter]._id = uniqueid.uniqueid();
+            req.session.cart[counter].qty = parseInt(req.param('qty'));
+            req.session.cart[counter].code = req.param('code');
+            req.session.cart[counter].title = req.param('title');
+            req.session.cart[counter].price = req.param('price');
+           }
+     
+        }    
          
-     }
+    }
                    
                    
     } else {
@@ -140,19 +150,29 @@ exports.add = function(req, res){
          req.session.cart = [];
          req.session.cart[0] = {};
          req.session.cart[0]._id = uniqueid.uniqueid();
-         req.session.cart[0].qty = req.param('qty');
+         req.session.cart[0].qty = parseInt(req.param('qty'));
          req.session.cart[0].title = req.param('title');
          req.session.cart[0].code = req.param('code');
          req.session.cart[0].price = req.param('price');
      } else {
-         console.log("Такой есть");
-         var counter =  req.session.cart.length;
-         req.session.cart[counter] = {};
-         req.session.cart[counter]._id = uniqueid.uniqueid();
-         req.session.cart[counter].qty = req.param('qty');
-         req.session.cart[counter].code = req.param('code');
-         req.session.cart[counter].title = req.param('title');
-         req.session.cart[counter].price = req.param('price');
+           console.log("Такой есть");
+           var counter =  req.session.cart.length;
+          
+           for (var i = 0; i < counter; i++) {
+             if(req.session.cart[i].code == req.param('code')){
+                 req.session.cart[i].qty =  req.session.cart[i].qty + parseInt(req.param('qty'));
+                 var iteminCart = true;
+             } 
+            }
+         
+           if (iteminCart != true){
+            req.session.cart[counter] = {};
+            req.session.cart[counter]._id = uniqueid.uniqueid();
+            req.session.cart[counter].qty =  parseInt(req.param('qty'));
+            req.session.cart[counter].code = req.param('code');
+            req.session.cart[counter].title = req.param('title');
+            req.session.cart[counter].price = req.param('price');
+           }
      
      }
      

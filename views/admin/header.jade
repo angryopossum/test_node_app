@@ -10,6 +10,9 @@
           a(href='/papers') Papers
         li
           a(href='/feedback') Feedback
+        li
+          a(href='/cart') Cart
           
  
- 
+      - if (user) {var username = user.username} else { var username = "anonymus"}
+      | Username #{username}

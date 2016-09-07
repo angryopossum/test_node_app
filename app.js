@@ -2,6 +2,7 @@
 /**
  * Module dependencies.
  */
+require('newrelic');
 
 var express = require('express')
   , config =require("./config")
