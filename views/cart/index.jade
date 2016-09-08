@@ -12,7 +12,7 @@ block content
     
     }
   
-   function deleteItem(id){
+   function deleteItem(id, qty ,price){
     var params = "id="+id;
     var xhr = new XMLHttpRequest();
     xhr.open("POST","/cart/remove");
@@ -22,16 +22,21 @@ block content
     xhr.onreadystatechange = function() {if(xhr.readyState == 4 && xhr.status == 200) {}}
     xhr.send(params);
     document.getElementById(id).parentNode.removeChild(document.getElementById(id))
+    document.getElementById("total").innerHTML = (parseFloat(document.getElementById("total").innerHTML)*100 - parseInt(qty)*parseFloat(price)*100)/100;
     }
   
   
   
  
   h1= title
+  - var total = 0;
   - for (var i = Object.keys(cart).length ; i--; ) {
     span(id="#{cart[i]._id}")
      |#{cart[i]._id} #{cart[i].code} #{cart[i].title} #{cart[i].qty} #{cart[i].price} 
-     button(type='button', onclick="deleteItem('#{cart[i]._id}');") delete  
+     button(type='button', onclick="deleteItem('#{cart[i]._id}', #{cart[i].qty}, #{cart[i].price} );") delete  
      br
+     - total = (total*100 + cart[i].qty*cart[i].price*100)/100;
   - }
+  | total: 
+  span(id="total") #{total} 
    
