@@ -277,3 +277,53 @@ exports.remove = function(req, res){
      
         
 };
+
+
+exports.update = function(req, res){
+    
+    if (typeof(req.session.passport) != "undefined"){
+     
+     if (req.session.passport.user) {
+     
+       Shoppingcart.findOne({_id: req.param('id')}).exec(
+          function (err, result) {
+            if(err) throw err;
+            if (result == null){
+                } else {
+                   result.qty = parseInt(req.param('qty')); 
+                   result.save();
+                }
+                  
+           });
+    
+     
+      } else {
+           console.log('case1');
+           var counter =  req.session.cart.length;
+           for (var i = 0; i < counter; i++) {
+             if(req.session.cart[i]._id == req.param('id')){
+                req.session.cart[i].qty = parseInt(req.param('qty'));
+               
+             } 
+            }
+        
+      }
+    
+    
+    
+    
+    } else {
+             
+             var counter =  req.session.cart.length;
+             for (var i = 0; i < counter; i++) {
+                 
+              if(req.session.cart[i]._id == req.param('id')){
+                req.session.cart[i].qty = parseInt(req.param('qty')); 
+                req.session.save(function (err) {
+                     if(err) throw err;
+                })
+                
+             }
+            }
+    }
+};

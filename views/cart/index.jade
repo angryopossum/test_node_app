@@ -25,14 +25,60 @@ block content
     document.getElementById("total").innerHTML = (parseFloat(document.getElementById("total").innerHTML)*100 - parseInt(qty)*parseFloat(price)*100)/100;
     }
   
-  
-  
+   function minus(id){
+    var price = parseInt(parseFloat(document.getElementById("p_"+id).innerHTML)*100);
+    var qty = parseInt(document.getElementById("q_"+id).innerHTML);
+    var total = parseInt(parseFloat(document.getElementById("total").innerHTML)*100);
+    
+    
+    if(qty >= 1){
+     document.getElementById("q_"+id).innerHTML = qty - 1;
+     var diff = total - price;
+     document.getElementById("total").innerHTML = parseFloat(diff)/100;
+     updateQty(id, qty-1);
+    } else {
+     document.getElementById("q_"+id).innerHTML = 0;
+     updateQty(id, 0);
+    }
+    
+   }
+   
+   function plus(id){
+    var price = parseInt(parseFloat(document.getElementById("p_"+id).innerHTML)*100);
+    var qty = parseInt(document.getElementById("q_"+id).innerHTML);
+    var total = parseInt(parseFloat(document.getElementById("total").innerHTML)*100);
+    
+    
+    var diff = total + price;
+    
+    document.getElementById("q_"+id).innerHTML = qty + 1;
+    document.getElementById("total").innerHTML = parseFloat(diff)/100;
+    updateQty(id, qty+1);
+   
+   }
+   
+   function updateQty(id, qty){
+    var params = "id="+id+"&qty="+qty;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/cart/update");
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");   
+    xhr.setRequestHeader("Content-length", params.length);
+    xhr.setRequestHeader("Connection", "close");
+    xhr.onreadystatechange = function() {if(xhr.readyState == 4 && xhr.status == 200) {}}
+    xhr.send(params);
+    }
+   
+   
  
   h1= title
   - var total = 0;
   - for (var i = Object.keys(cart).length ; i--; ) {
     span(id="#{cart[i]._id}")
-     |#{cart[i]._id} #{cart[i].code} #{cart[i].title} #{cart[i].qty} #{cart[i].price} 
+     |#{cart[i].code} #{cart[i].title}
+     button(onclick="minus('#{cart[i]._id}')") -
+     span(id="q_"+"#{cart[i]._id}") #{cart[i].qty}
+     button(onclick="plus('#{cart[i]._id}')") +
+     span(id="p_"+"#{cart[i]._id}") #{cart[i].price} 
      button(type='button', onclick="deleteItem('#{cart[i]._id}', #{cart[i].qty}, #{cart[i].price} );") delete  
      br
      - total = (total*100 + cart[i].qty*cart[i].price*100)/100;

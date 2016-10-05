@@ -2,7 +2,6 @@
 /**
  * Module dependencies.
  */
-require('newrelic');
 
 var express = require('express')
   , config =require("./config")
@@ -97,6 +96,7 @@ app.post('/admin/users/new', user_new.create);
 app.get('/cart', cart.index);
 app.post('/cart/add', cart.add);
 app.post('/cart/remove', cart.remove);
+app.post('/cart/update', cart.update);
 
 app.get('/search', search.index);
 app.post('/search', search.livesearch);
