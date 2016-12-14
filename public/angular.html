@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" ng-app="shop42">
+<head>
+    <meta charset="UTF-8">
+    <title>Angular test</title>
+    <script src="javascripts/angular.min.js"></script>
+    <script src="angular_app.js"></script>
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Angular test</h1>
+    <div ng-controller="ProductController as store">{{store.storename}}</div>
+    
+     <div ng-controller="SearchController as search">
+         
+      <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Text input" ng-model="searchText" ng-change="change(text)">
+        </div>
+        <div class="col-md-5">{{searchText}}</div>
+            
+    </div>
+    <div class="row">
+       <div ng-repeat="s in entries" >
+           <span>{{s.code}}</span>
+              <b>{{s.title}}</b>
+             
+       </div>
+     
+    </div>   
+         
+    
+    
+    
+    
+</body>
+</html>
